@@ -1,0 +1,253 @@
+{
+  "info": {
+    "_postman_id": "d7634af6-352a-455d-88d8-b8920968102f",
+    "name": "api librería",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6777473"
+  },
+  "item": [
+    {
+      "name": "lista de libros",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libros",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libros"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "insertar libro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Harry Potter y el Misterio del Príncipe\",\r\n    \"autor\": \"J.K. Rowling\",\r\n    \"editorial\": \"Salamandra\",\r\n    \"imagen\": \"https://encantalibros.com/wp-content/uploads/2020/12/9788498386363.jpg\",\r\n    \"sinopsis\": \"Con dieciseis años cumplidos, Harry inicia el sexto curso en Hogwarts en medio de terribles acontecimientos que asolan Inglaterra. Elegido capitán del equipo de quidditch, los ensayos, los exámenes y las chicas ocupan todo su tiempo, pero la tranquilidad dura poco. A pesar de los ferreos controles de seguridad que protegen la escuela, dos alumnos son brutalmente atacados. Dumbledore sabe que se acerca el momento, anunciado por la Profecía, en que Harry y Voldemort se enfrentarán a muerte: «El único con poder para vencer al Señor Tenebroso se acerca… Uno de los dos debe morir a manos del otro, pues ninguno de los dos podrá vivir mientras siga el otro con vida.» El anciano director solicitará la ayuda de Harry y juntos emprenderán peligrosos viajes para intentar debilitar al enemigo, para lo cual el joven mago contará con un viejo libro de pociones perteneciente a un misterioso personaje, alguien que se hace llamar Príncipe Mestizo.\",\r\n    \"isbn\": \"9788498386363\",\r\n    \"calificacion\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libros",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libros"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "actualizar libro",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"HP 6, Harry Potter y el Misterio del Príncipe\",\r\n    \"autor\": \"J.K. Rowling\",\r\n    \"editorial\": \"Salamandra\",\r\n    \"imagen\": \"https://encantalibros.com/wp-content/uploads/2020/12/9788498386363.jpg\",\r\n    \"sinopsis\": \"Con dieciseis años cumplidos, Harry inicia el sexto curso en Hogwarts en medio de terribles acontecimientos que asolan Inglaterra. Elegido capitán del equipo de quidditch, los ensayos, los exámenes y las chicas ocupan todo su tiempo, pero la tranquilidad dura poco. A pesar de los ferreos controles de seguridad que protegen la escuela, dos alumnos son brutalmente atacados. Dumbledore sabe que se acerca el momento, anunciado por la Profecía, en que Harry y Voldemort se enfrentarán a muerte: «El único con poder para vencer al Señor Tenebroso se acerca… Uno de los dos debe morir a manos del otro, pues ninguno de los dos podrá vivir mientras siga el otro con vida.» El anciano director solicitará la ayuda de Harry y juntos emprenderán peligrosos viajes para intentar debilitar al enemigo, para lo cual el joven mago contará con un viejo libro de pociones perteneciente a un misterioso personaje, alguien que se hace llamar Príncipe Mestizo.\",\r\n    \"isbn\": \"9788498386363\",\r\n    \"calificacion\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libros/153",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libros",
+            "153"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get libro por id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libros/47",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libros",
+            "47"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "eliminar libro",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libros/153",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libros",
+            "153"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get lista de generos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/generos",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "generos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "agregar género",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Juvenil\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/generos",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "generos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "agregar genero a libro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"libro_id\": 47,\r\n    \"genero_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/libro-generos",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "libro-generos"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

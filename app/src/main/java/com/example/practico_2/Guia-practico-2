@@ -1,0 +1,92 @@
+Aplicación de Biblioteca
+27/04/2026
+Funcionalidades de la aplicación
+
+1 Listado de libros
+
+• Obtener lista desde la API
+• Mostrar nombre, autor e imagen
+• Indicador de carga
+• Estado vacío cuando no hay datos
+• Manejo de errores de red
+
+2 Detalle de libro
+
+• Mostrar toda la información:
+o Nombre
+o Autor
+o Editorial
+o Imagen
+o Sinopsis
+o ISBN
+o Calificación
+• Navegación desde la lista
+• Botones de acciones (editar, eliminar)
+
+3 Crear libro
+
+o Formulario con validaciones:
+o Campos obligatorios
+o Formato de ISBN
+o URL válida para imagen
+o Asignar géneros a libro (seleccionar varios y mandar todos juntos)
+o Envío a la API
+o Feedback de éxito/error
+o Refresco automático en lista/detalle
+
+4 Editar libro
+
+• Precargar datos existentes en el formulario
+• Modificar cualquier campo
+• Validaciones iguales a creación
+• Actualización vía API
+• Refresco automático en lista/detalle
+
+5 Eliminar libros
+
+• Confirmación antes de eliminar
+• Eliminación vía API
+• Actualización de la lista
+• Manejo de errores
+
+6 Listado de géneros
+
+• Obtener desde API
+• Mostrar lista simple
+• Estado de carga y error
+
+7 Crear género
+
+• Formulario simple
+• Validación de nombre
+• Envío a API
+• Refresco automático de la lista
+
+8 Eliminar Género
+
+• Confirmación antes de eliminar
+• Eliminación vía API
+• Actualización de la lista
+• Manejo de errores
+
+Manejo de estado
+
+• Estados por pantalla:
+o Loading
+o Success
+o Error
+• Uso obligatorio de ViewModel y StateFlow
+
+Networking
+
+• Cliente HTTP con Retrofit
+• Manejo de JSON
+
+Validaciones
+
+• Campos obligatorios
+• Formatos (ISBN, URL)
+• Prevención de envíos duplicados
+
+URL de la API
+https://apilibreria.jmacboy.com/api
