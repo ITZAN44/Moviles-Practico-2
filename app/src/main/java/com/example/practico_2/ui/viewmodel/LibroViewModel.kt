@@ -2,13 +2,10 @@ package com.example.practico_2.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.practico_2.datos.modelo.Genero
 import com.example.practico_2.datos.modelo.LibroRequest
 import com.example.practico_2.datos.repositorio.LibroRepositorio
-import com.example.practico_2.ui.estado.EstadoCrearLibro
-import com.example.practico_2.ui.estado.EstadoDetalleLibro
-import com.example.practico_2.ui.estado.EstadoEditarLibro
-import com.example.practico_2.ui.estado.EstadoGeneros
-import com.example.practico_2.ui.estado.EstadoLibros
+import com.example.practico_2.ui.estado.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,8 +24,14 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
     private val _estadoEditar = MutableStateFlow<EstadoEditarLibro>(EstadoEditarLibro.Ideal)
     val estadoEditar: StateFlow<EstadoEditarLibro> = _estadoEditar
 
+    private val _estadoEliminar = MutableStateFlow<EstadoEliminarLibro>(EstadoEliminarLibro.Ideal)
+    val estadoEliminar: StateFlow<EstadoEliminarLibro> = _estadoEliminar
+
     private val _estadoGeneros = MutableStateFlow<EstadoGeneros>(EstadoGeneros.Cargando)
     val estadoGeneros: StateFlow<EstadoGeneros> = _estadoGeneros
+
+    private val _estadoCrearGenero = MutableStateFlow<EstadoCrearGenero>(EstadoCrearGenero.Ideal)
+    val estadoCrearGenero: StateFlow<EstadoCrearGenero> = _estadoCrearGenero
 
     init {
         obtenerLibros()
@@ -70,14 +73,13 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
             _estadoCrear.value = EstadoCrearLibro.Cargando
             repositorio.crearLibro(libro)
                 .onSuccess { libroCreado ->
-                    // Asignar géneros uno por uno (o como pida la API)
                     libroCreado.id?.let { libroId ->
                         generosSeleccionados.forEach { generoId ->
                             repositorio.agregarGeneroALibro(libroId, generoId)
                         }
                     }
                     _estadoCrear.value = EstadoCrearLibro.Exito
-                    obtenerLibros() // Refrescar lista
+                    obtenerLibros()
                 }
                 .onFailure { error ->
                     _estadoCrear.value = EstadoCrearLibro.Error(error.message ?: "Error al crear")
@@ -107,6 +109,24 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
         _estadoEditar.value = EstadoEditarLibro.Ideal
     }
 
+    fun eliminarLibro(id: Int) {
+        viewModelScope.launch {
+            _estadoEliminar.value = EstadoEliminarLibro.Cargando
+            repositorio.eliminarLibro(id)
+                .onSuccess {
+                    _estadoEliminar.value = EstadoEliminarLibro.Exito
+                    obtenerLibros()
+                }
+                .onFailure { error ->
+                    _estadoEliminar.value = EstadoEliminarLibro.Error(error.message ?: "Error al eliminar")
+                }
+        }
+    }
+
+    fun resetearEstadoEliminar() {
+        _estadoEliminar.value = EstadoEliminarLibro.Ideal
+    }
+
     fun obtenerLibroPorId(id: Int) {
         viewModelScope.launch {
             _estadoDetalle.value = EstadoDetalleLibro.Cargando
@@ -118,5 +138,27 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
                     _estadoDetalle.value = EstadoDetalleLibro.Error(error.message ?: "Error desconocido")
                 }
         }
+    }
+
+    fun crearGenero(nombre: String) {
+        if (nombre.isBlank()) {
+            _estadoCrearGenero.value = EstadoCrearGenero.Error("El nombre no puede estar vacío")
+            return
+        }
+        viewModelScope.launch {
+            _estadoCrearGenero.value = EstadoCrearGenero.Cargando
+            repositorio.crearGenero(Genero(nombre = nombre))
+                .onSuccess {
+                    _estadoCrearGenero.value = EstadoCrearGenero.Exito
+                    obtenerGeneros()
+                }
+                .onFailure { error ->
+                    _estadoCrearGenero.value = EstadoCrearGenero.Error(error.message ?: "Error al crear género")
+                }
+        }
+    }
+
+    fun resetearEstadoCrearGenero() {
+        _estadoCrearGenero.value = EstadoCrearGenero.Ideal
     }
 }

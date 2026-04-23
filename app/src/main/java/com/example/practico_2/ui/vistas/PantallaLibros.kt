@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -20,12 +21,24 @@ import com.example.practico_2.ui.viewmodel.LibroViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaLibros(viewModel: LibroViewModel, alVerDetalle: (Int) -> Unit, alCrearLibro: () -> Unit) {
+fun PantallaLibros(
+    viewModel: LibroViewModel,
+    alVerDetalle: (Int) -> Unit,
+    alCrearLibro: () -> Unit,
+    alVerGeneros: () -> Unit
+) {
     val estado by viewModel.estado.collectAsState()
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Lista de Libros") })
+            TopAppBar(
+                title = { Text("Lista de Libros") },
+                actions = {
+                    IconButton(onClick = alVerGeneros) {
+                        Icon(Icons.AutoMirrored.Filled.List, contentDescription = "Ver Géneros")
+                    }
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = alCrearLibro) {

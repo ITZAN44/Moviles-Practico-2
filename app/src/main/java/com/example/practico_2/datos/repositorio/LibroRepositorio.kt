@@ -71,6 +71,32 @@ class LibroRepositorio(private val apiServicio: ApiService) {
         }
     }
 
+    suspend fun eliminarLibro(id: Int): Result<Unit> {
+        return try {
+            val respuesta = apiServicio.eliminarLibro(id)
+            if (respuesta.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error al eliminar libro: ${respuesta.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun crearGenero(genero: Genero): Result<Genero> {
+        return try {
+            val respuesta = apiServicio.crearGenero(genero)
+            if (respuesta.isSuccessful && respuesta.body() != null) {
+                Result.success(respuesta.body()!!)
+            } else {
+                Result.failure(Exception("Error al crear género: ${respuesta.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun agregarGeneroALibro(libroId: Int, generoId: Int): Result<Unit> {
         return try {
             val respuesta = apiServicio.agregarGeneroALibro(mapOf("libro_id" to libroId, "genero_id" to generoId))

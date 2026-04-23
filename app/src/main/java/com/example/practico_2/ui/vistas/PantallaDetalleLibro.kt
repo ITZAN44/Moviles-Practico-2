@@ -4,27 +4,57 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.practico_2.ui.estado.EstadoDetalleLibro
+import com.example.practico_2.ui.estado.EstadoEliminarLibro
 import com.example.practico_2.ui.viewmodel.LibroViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaDetalleLibro(idLibro: Int, viewModel: LibroViewModel, alVolver: () -> Unit, alEditar: (Int) -> Unit) {
     val estado by viewModel.estadoDetalle.collectAsState()
+    val estadoEliminar by viewModel.estadoEliminar.collectAsState()
+    var mostrarDialogoEliminar by remember { mutableStateOf(false) }
 
     LaunchedEffect(idLibro) {
         viewModel.obtenerLibroPorId(idLibro)
+    }
+
+    LaunchedEffect(estadoEliminar) {
+        if (estadoEliminar is EstadoEliminarLibro.Exito) {
+            viewModel.resetearEstadoEliminar()
+            alVolver()
+        }
+    }
+
+    if (mostrarDialogoEliminar) {
+        AlertDialog(
+            onDismissRequest = { mostrarDialogoEliminar = false },
+            title = { Text("Confirmar eliminación") },
+            text = { Text("¿Estás seguro de que deseas eliminar este libro? Esta acción no se puede deshacer.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.eliminarLibro(idLibro)
+                        mostrarDialogoEliminar = false
+                    }
+                ) {
+                    Text("Eliminar", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { mostrarDialogoEliminar = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -33,7 +63,7 @@ fun PantallaDetalleLibro(idLibro: Int, viewModel: LibroViewModel, alVolver: () -
                 title = { Text("Detalle del Libro") },
                 navigationIcon = {
                     IconButton(onClick = alVolver) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
@@ -76,16 +106,29 @@ fun PantallaDetalleLibro(idLibro: Int, viewModel: LibroViewModel, alVolver: () -
                         Text(text = libro.sinopsis, style = MaterialTheme.typography.bodyMedium)
                         
                         Spacer(modifier = Modifier.height(24.dp))
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                            Button(onClick = { alEditar(libro.id ?: 0) }) {
-                                Text("Editar")
+                        
+                        if (estadoEliminar is EstadoEliminarLibro.Cargando) {
+                            CircularProgressIndicator()
+                        } else {
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                                Button(onClick = { alEditar(libro.id ?: 0) }) {
+                                    Text("Editar")
+                                }
+                                Button(
+                                    onClick = { mostrarDialogoEliminar = true },
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                                ) {
+                                    Text("Eliminar")
+                                }
                             }
-                            Button(
-                                onClick = { /* TODO: Eliminar */ },
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                            ) {
-                                Text("Eliminar")
-                            }
+                        }
+                        
+                        if (estadoEliminar is EstadoEliminarLibro.Error) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = (estadoEliminar as EstadoEliminarLibro.Error).mensaje,
+                                color = MaterialTheme.colorScheme.error
+                            )
                         }
                     }
                 }

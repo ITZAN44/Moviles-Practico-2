@@ -16,10 +16,7 @@ import com.example.practico_2.datos.repositorio.LibroRepositorio
 import com.example.practico_2.ui.theme.Practico2Theme
 import com.example.practico_2.ui.viewmodel.LibroViewModel
 import com.example.practico_2.ui.viewmodel.LibroViewModelFactory
-import com.example.practico_2.ui.vistas.PantallaCrearLibro
-import com.example.practico_2.ui.vistas.PantallaDetalleLibro
-import com.example.practico_2.ui.vistas.PantallaEditarLibro
-import com.example.practico_2.ui.vistas.PantallaLibros
+import com.example.practico_2.ui.vistas.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +47,24 @@ fun Principal(viewModel: LibroViewModel) {
                 },
                 alCrearLibro = {
                     navController.navigate("crear")
+                },
+                alVerGeneros = {
+                    navController.navigate("generos")
                 }
+            )
+        }
+        composable("generos") {
+            PantallaGeneros(
+                viewModel = viewModel,
+                alVolver = { navController.popBackStack() },
+                alCrearGenero = { navController.navigate("crear-genero") },
+                alEliminar = { id -> /* Punto 8 */ }
+            )
+        }
+        composable("crear-genero") {
+            PantallaCrearGenero(
+                viewModel = viewModel,
+                alTerminar = { navController.popBackStack() }
             )
         }
         composable("crear") {
