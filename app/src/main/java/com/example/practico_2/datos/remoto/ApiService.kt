@@ -28,6 +28,9 @@ interface ApiService {
     @POST("generos")
     suspend fun crearGenero(@Body genero: Genero): Response<Genero>
 
+    @DELETE("generos/{id}")
+    suspend fun eliminarGenero(@Path("id") id: Int): Response<Unit>
+
     @POST("libro-generos")
     suspend fun agregarGeneroALibro(@Body cuerpo: Map<String, Int>): Response<Unit>
 }

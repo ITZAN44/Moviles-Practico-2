@@ -57,8 +57,7 @@ fun Principal(viewModel: LibroViewModel) {
             PantallaGeneros(
                 viewModel = viewModel,
                 alVolver = { navController.popBackStack() },
-                alCrearGenero = { navController.navigate("crear-genero") },
-                alEliminar = { id -> /* Punto 8 */ }
+                alCrearGenero = { navController.navigate("crear-genero") }
             )
         }
         composable("crear-genero") {

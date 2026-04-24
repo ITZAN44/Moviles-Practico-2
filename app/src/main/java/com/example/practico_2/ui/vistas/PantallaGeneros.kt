@@ -8,11 +8,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.practico_2.ui.estado.EstadoEliminarGenero
 import com.example.practico_2.ui.estado.EstadoGeneros
 import com.example.practico_2.ui.viewmodel.LibroViewModel
 
@@ -21,10 +21,40 @@ import com.example.practico_2.ui.viewmodel.LibroViewModel
 fun PantallaGeneros(
     viewModel: LibroViewModel,
     alVolver: () -> Unit,
-    alCrearGenero: () -> Unit,
-    alEliminar: (Int) -> Unit
+    alCrearGenero: () -> Unit
 ) {
     val estado by viewModel.estadoGeneros.collectAsState()
+    val estadoEliminar by viewModel.estadoEliminarGenero.collectAsState()
+    var generoAEliminar by remember { mutableStateOf<Int?>(null) }
+
+    LaunchedEffect(estadoEliminar) {
+        if (estadoEliminar is EstadoEliminarGenero.Exito) {
+            viewModel.resetearEstadoEliminarGenero()
+        }
+    }
+
+    if (generoAEliminar != null) {
+        AlertDialog(
+            onDismissRequest = { generoAEliminar = null },
+            title = { Text("Confirmar eliminación") },
+            text = { Text("¿Estás seguro de que deseas eliminar este género?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        generoAEliminar?.let { viewModel.eliminarGenero(it) }
+                        generoAEliminar = null
+                    }
+                ) {
+                    Text("Eliminar", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { generoAEliminar = null }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -72,12 +102,16 @@ fun PantallaGeneros(
                                 ListItem(
                                     headlineContent = { Text(genero.nombre) },
                                     trailingContent = {
-                                        IconButton(onClick = { alEliminar(genero.id ?: 0) }) {
-                                            Icon(
-                                                Icons.Default.Delete,
-                                                contentDescription = "Eliminar",
-                                                tint = MaterialTheme.colorScheme.error
-                                            )
+                                        if (estadoEliminar is EstadoEliminarGenero.Cargando && generoAEliminar == genero.id) {
+                                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                                        } else {
+                                            IconButton(onClick = { generoAEliminar = genero.id }) {
+                                                Icon(
+                                                    Icons.Default.Delete,
+                                                    contentDescription = "Eliminar",
+                                                    tint = MaterialTheme.colorScheme.error
+                                                )
+                                            }
                                         }
                                     }
                                 )

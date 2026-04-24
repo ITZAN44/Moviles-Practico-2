@@ -97,6 +97,19 @@ class LibroRepositorio(private val apiServicio: ApiService) {
         }
     }
 
+    suspend fun eliminarGenero(id: Int): Result<Unit> {
+        return try {
+            val respuesta = apiServicio.eliminarGenero(id)
+            if (respuesta.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error al eliminar género: ${respuesta.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun agregarGeneroALibro(libroId: Int, generoId: Int): Result<Unit> {
         return try {
             val respuesta = apiServicio.agregarGeneroALibro(mapOf("libro_id" to libroId, "genero_id" to generoId))

@@ -4,13 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.practico_2.datos.modelo.Libro
 import com.example.practico_2.datos.modelo.LibroRequest
 import com.example.practico_2.ui.estado.EstadoDetalleLibro
 import com.example.practico_2.ui.estado.EstadoEditarLibro
@@ -63,7 +62,7 @@ fun PantallaEditarLibro(idLibro: Int, viewModel: LibroViewModel, alTerminar: () 
                 title = { Text("Editar Libro") },
                 navigationIcon = {
                     IconButton(onClick = alTerminar) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )

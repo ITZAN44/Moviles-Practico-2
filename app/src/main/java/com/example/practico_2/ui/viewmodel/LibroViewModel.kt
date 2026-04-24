@@ -33,6 +33,9 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
     private val _estadoCrearGenero = MutableStateFlow<EstadoCrearGenero>(EstadoCrearGenero.Ideal)
     val estadoCrearGenero: StateFlow<EstadoCrearGenero> = _estadoCrearGenero
 
+    private val _estadoEliminarGenero = MutableStateFlow<EstadoEliminarGenero>(EstadoEliminarGenero.Ideal)
+    val estadoEliminarGenero: StateFlow<EstadoEliminarGenero> = _estadoEliminarGenero
+
     init {
         obtenerLibros()
         obtenerGeneros()
@@ -160,5 +163,23 @@ class LibroViewModel(private val repositorio: LibroRepositorio) : ViewModel() {
 
     fun resetearEstadoCrearGenero() {
         _estadoCrearGenero.value = EstadoCrearGenero.Ideal
+    }
+
+    fun eliminarGenero(id: Int) {
+        viewModelScope.launch {
+            _estadoEliminarGenero.value = EstadoEliminarGenero.Cargando
+            repositorio.eliminarGenero(id)
+                .onSuccess {
+                    _estadoEliminarGenero.value = EstadoEliminarGenero.Exito
+                    obtenerGeneros()
+                }
+                .onFailure { error ->
+                    _estadoEliminarGenero.value = EstadoEliminarGenero.Error(error.message ?: "Error al eliminar género")
+                }
+        }
+    }
+
+    fun resetearEstadoEliminarGenero() {
+        _estadoEliminarGenero.value = EstadoEliminarGenero.Ideal
     }
 }

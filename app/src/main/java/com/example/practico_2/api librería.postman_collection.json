@@ -157,6 +157,34 @@
       "response": []
     },
     {
+      "name": "eliminar genero",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://apilibreria.jmacboy.com/api/generos/153",
+          "protocol": "https",
+          "host": [
+            "apilibreria",
+            "jmacboy",
+            "com"
+          ],
+          "path": [
+            "api",
+            "generos",
+            "153"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "get lista de generos",
       "request": {
         "method": "GET",
